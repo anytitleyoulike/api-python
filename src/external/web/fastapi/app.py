@@ -13,10 +13,13 @@ add_pagination(app)
 file_manipulator = FileManipulator()
 
 
-@app.get("/read-file", response_model=Page[Person])
+@app.get("/read", response_model=Page[Person])
 def read_file():
-    result = file_manipulator.extract(file_path="src/files/input.csv", chunksize=5000)
-    return paginate(result)
+    try:
+        result = file_manipulator.extract()
+        return paginate(result)
+    except FileNotFoundError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @app.post("/upload")
