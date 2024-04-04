@@ -5,15 +5,17 @@ from fastapi_pagination import Page, add_pagination, paginate
 from starlette.responses import HTMLResponse
 
 from src.core.domain.Person import Person
-from src.core.services.CsvExtractorService import CsvExtractor
+from src.core.services.FileManipulator import FileManipulator
 
 app = FastAPI()
 add_pagination(app)
 
-file_extractor_usecase = CsvExtractor()
+file_manipulator = FileManipulator()
+
+
 @app.get("/read-file", response_model=Page[Person])
 def get_csv_person():
-    result = file_extractor_usecase.extract(file_path="src/files/input.csv", chunksize=5000)
+    result = file_manipulator.extract(file_path="src/files/input.csv", chunksize=5000)
     return paginate(result)
 
 
@@ -25,7 +27,7 @@ async def create_upload_files(files: list[UploadFile]):
     if file_extension != ".csv":
         raise HTTPException(status_code=400, detail="Only csv files are supported")
 
-    file_extractor_usecase.upload_file(files)
+    file_manipulator.upload_file(files)
 
     return {"response": True}
 

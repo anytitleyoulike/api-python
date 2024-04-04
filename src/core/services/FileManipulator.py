@@ -4,10 +4,10 @@ from fastapi import UploadFile
 from pandas import pandas
 
 from src.core.domain.Person import Person
-from src.core.port.FileUseCase import FileUseCase
+from src.core.usecase.FileUseCase import FileUseCase
 
 
-class CsvExtractor(FileUseCase):
+class FileManipulator(FileUseCase):
     def __init__(self):
         self.person_data = []
 
