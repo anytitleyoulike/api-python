@@ -1,12 +1,21 @@
+import os
+
+from fastapi import UploadFile
 from pandas import pandas
 
-from src.web.fastapi.domain.Person import Person
-from src.web.fastapi.FileExtractor import FileExtractor
+from src.core.domain.Person import Person
+from src.core.port.FileUseCase import FileUseCase
 
 
-class CsvExtractor(FileExtractor):
+class CsvExtractor(FileUseCase):
 
-    def extract(self, file_path: str, chunksize=5000) -> list:
+    def upload_file(self, files: list[UploadFile]):
+
+        file_path = os.path.join("src/files", files[0].filename)
+        with open(file_path, "wb") as f:
+            f.write(files[0].file.read())
+
+    def extract(self, file_path: str, chunksize=5000) -> list[Person]:
         person_data = []
 
         for chunk in pandas.read_csv(file_path, chunksize=chunksize):
