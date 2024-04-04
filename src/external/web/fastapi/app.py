@@ -14,7 +14,7 @@ file_manipulator = FileManipulator()
 
 
 @app.get("/read-file", response_model=Page[Person])
-def get_csv_person():
+def read_file():
     result = file_manipulator.extract(file_path="src/files/input.csv", chunksize=5000)
     return paginate(result)
 
@@ -35,11 +35,11 @@ async def create_upload_files(files: list[UploadFile]):
 @app.get("/")
 async def main():
     content = """
-<body>
-<form action="/upload" enctype="multipart/form-data" method="post">
-<input name="files" type="file" multiple>
-<input type="submit">
-</form>
-</body>
+        <body>
+            <form action="/upload" enctype="multipart/form-data" method="post">
+                <input name="files" type="file" multiple>
+                <input type="submit">
+        </form>
+        </body>
     """
     return HTMLResponse(content=content)

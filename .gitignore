@@ -1,7 +1,6 @@
 **__pycache__
 .venv
 venv
-
+.vscode
 .idea
-
-files
+src/files
