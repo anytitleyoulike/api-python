@@ -7,7 +7,7 @@ from src.core.domain.Person import Person
 
 class FileUseCase(ABC):
     @abstractmethod
-    def extract(self, file_path: str, chunksize: int) -> list[Person]:
+    def extract(self) -> list[Person]:
         pass
 
     @abstractmethod
