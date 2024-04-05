@@ -1,7 +1,8 @@
 import os.path
 
-from fastapi import FastAPI, UploadFile, HTTPException
+from fastapi import FastAPI, UploadFile, HTTPException, status
 from fastapi_pagination import Page, add_pagination, paginate
+from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse
 
 from src.core.domain.Person import Person
@@ -9,6 +10,14 @@ from src.core.services.FileManipulator import FileManipulator
 
 app = FastAPI()
 add_pagination(app)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 file_manipulator = FileManipulator()
 
@@ -22,7 +31,7 @@ def read_file():
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@app.post("/upload")
+@app.post("/upload", status_code=status.HTTP_201_CREATED)
 async def create_upload_files(files: list[UploadFile]):
     filename = files[0].filename
     file_extension = os.path.splitext(filename)[1]
