@@ -4,3 +4,4 @@ venv
 .vscode
 .idea
 src/files
+frontend/node_modules
